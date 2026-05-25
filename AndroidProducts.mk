@@ -1,8 +1,7 @@
-#
-# Copyright (C) 2026 The LineageOS Project
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/infinity_macanc.mk
+    $(LOCAL_DIR)/infinity_macanc.mk \
+    $(LOCAL_DIR)/fox_macanc.mk
+
+COMMON_LUNCH_CHOICES := \
+    infinity_macanc-userdebug \
+    fox_macanc-eng
