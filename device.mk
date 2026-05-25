@@ -1,59 +1,35 @@
 #
-# Copyright (C) 2021-2026 The LineageOS Project
+# Copyright (C) 2025 The Android Open Source Project
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+# Copyright (C) 2024 The OrangeFox Recovery Project
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
 
-# AAPT
-PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xxxhdpi
+LOCAL_PATH := device/oneplus/macanc
 
-# Audio
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/audio/audio_module_config_primary.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/audio_module_config_primary.xml \
-    $(LOCAL_PATH)/configs/audio/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
-    $(LOCAL_PATH)/configs/audio/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml
+# Shipping API level
+BOARD_SHIPPING_API_LEVEL := 34
+PRODUCT_SHIPPING_API_LEVEL := 34
+PRODUCT_TARGET_VNDK_VERSION := 34
 
-# Boot animation
-TARGET_SCREEN_HEIGHT := 2800
-TARGET_SCREEN_WIDTH := 1272
-
-# Display
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/display/displayconfig.xml:$(TARGET_COPY_OUT_VENDOR)/etc/displayconfig/display_id_4630946700822127507.xml
-
-# Keymint
-PRODUCT_PACKAGES += \
-    android.hardware.security.keymint3-service.strongbox.nxp \
-    android.hardware.weaver-service.nxp
-
-# LiveDisplay
-$(call soong_config_set_bool,OPLUS_LINEAGE_LIVEDISPLAY_HAL,ENABLE_SE,false)
-
-# Overlays
-DEVICE_PACKAGE_OVERLAYS += \
-    $(LOCAL_PATH)/overlay-lineage
+# Dynamic partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
 PRODUCT_PACKAGES += \
-    OPlusFrameworksResTarget \
-    OPlusSettingsProviderResTarget \
-    OPlusSettingsResTarget \
-    OPlusSystemUIResTarget \
-    OPlusWifiResTarget
+    lpflash \
+    lpmake \
+    lpunpack
+
+# OTA certs
+PRODUCT_EXTRA_RECOVERY_KEYS += \
+	$(LOCAL_PATH)/security/local_OTA \
+	$(LOCAL_PATH)/security/special_OTA
 
 # Soong namespaces
-PRODUCT_SOONG_NAMESPACES += \
-    $(LOCAL_PATH)
+PRODUCT_SOONG_NAMESPACES += $(LOCAL_PATH)
 
-# Touch features
-$(call soong_config_set_bool,OPLUS_LINEAGE_TOUCH_HAL,ENABLE_GM,true)
-
-# Vibrator
-PRODUCT_PACKAGES += \
-    android.hardware.vibrator.service.oplus-richtap
-
-# Inherit from the common OEM chipset makefile.
-$(call inherit-product, device/oneplus/sm8850-common/common.mk)
-
-# Inherit from the proprietary files makefile.
-$(call inherit-product, vendor/oneplus/macanc/macanc-vendor.mk)
+# some OrangeFox-specific settings
+$(call inherit-product, $(LOCAL_PATH)/fox_macanc.mk)
+#
