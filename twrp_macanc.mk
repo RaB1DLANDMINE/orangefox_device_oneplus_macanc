@@ -1,15 +1,11 @@
 #
-# Copyright (C) 2020 The Android Open Source Project
-# Copyright (C) 2020 The TWRP Open Source Project
-# Copyright (C) 2020 SebaUbuntu's TWRP device tree generator
-#
-# Copyright (C) 2019-2023 The OrangeFox Recovery Project
+# Copyright 2017 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,27 +14,29 @@
 # limitations under the License.
 #
 
+# Define hardware platform
 PRODUCT_RELEASE_NAME := macanc
+
+# Device path for OEM device tree
 DEVICE_PATH := device/oneplus/$(PRODUCT_RELEASE_NAME)
 
-# Inherit from those products. Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
-
-# Inherit from lavender device
+# Inherit from hardware-specific part of the product configuration
 $(call inherit-product, $(DEVICE_PATH)/device.mk)
 
 # Inherit any OrangeFox-specific settings
-$(call inherit-product-if-exists, $(DEVICE_PATH)/fox_lavender.mk)
+$(call inherit-product-if-exists, $(DEVICE_PATH)/fox_$(PRODUCT_RELEASE_NAME).mk)
 
-# Inherit some common Omni stuff.
+# Inherit some common TWRP stuff.
 $(call inherit-product, vendor/twrp/config/common.mk)
 
-# Device identifier. This must come after all inclusions
+## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := $(PRODUCT_RELEASE_NAME)
 PRODUCT_NAME := twrp_$(PRODUCT_RELEASE_NAME)
 PRODUCT_BRAND := OnePlus
-PRODUCT_MODEL := Ace 6T
+PRODUCT_MODEL := OnePlus Ace 6T
 PRODUCT_MANUFACTURER := OnePlus
-#
+
+# For dynamic/virtual A/B partitions layout overrides
+PRODUCT_BUILD_PROP_OVERRIDES += \
+    PRODUCT_NAME="OnePlus Ace 6T" \
+    PRODUCT_DEVICE="macanc"
